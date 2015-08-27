@@ -1,2 +1,2 @@
 # progpuerj2015
-Aulas de Progamação Paralela
+Aulas de Programação Paralela
