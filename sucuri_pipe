@@ -1,0 +1,30 @@
+import sys, os
+
+sys.path.append(os.environ['SUCURIHOME'])
+from sucuri import *
+
+def filterLine(line):
+	return line[0][:-1]+"..."
+
+def printLine(line):
+	print line[0]
+
+fname= sys.argv[1]
+nworkers = int(sys.argv[2])
+
+graph = DFGraph()
+sched = Scheduler(graph, nworkers, mpi_enabled = (sys.argv[1] =='True'))
+fp = open(fname, "r")
+
+s = Source(fp)
+f = FilterTagged(filterLine, 1)
+p = Serializer(printLine,1)
+
+graph.add(s)
+graph.add(f)
+graph.add(p)
+
+s.add_edge(f,0)
+f.add_edge(p,0)
+
+sched.start()
